@@ -1,7 +1,7 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-
+import { useState } from 'react'
+import { Sidebar } from '@/components/layouts/sidebar'
+import { ProfileDrawer } from '@/components/layouts/profile-drawer'
 import '../styles.css'
 
 export const Route = createRootRoute({
@@ -9,20 +9,16 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const [profileOpen, setProfileOpen] = useState(false)
+
   return (
-    <>
-      <Outlet />
-      <TanStackDevtools
-        config={{
-          position: 'bottom-right',
-        }}
-        plugins={[
-          {
-            name: 'TanStack Router',
-            render: <TanStackRouterDevtoolsPanel />,
-          },
-        ]}
-      />
-    </>
+    <div className="min-h-screen bg-background">
+      <Sidebar onProfileClick={() => setProfileOpen(true)} />
+      <main className="pt-[104px] md:pt-[141px] lg:pt-[77px] w-[min(100%-1.5rem,730px)] md:w-[min(100%-3rem,730px)] mx-auto">
+        <Outlet />
+      </main>
+
+      <ProfileDrawer open={profileOpen} onClose={() => setProfileOpen(false)} />
+    </div>
   )
 }
