@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label'
 import { useInvoiceStore } from '@/store/invoice-store'
 import { generateId, calcPaymentDue } from '@/lib/invoice'
 import { InvoiceFormSchema, DraftFormSchema } from '@/lib/schema'
+import { gooeyToast } from 'goey-toast'
 import type { Invoice, InvoiceItem } from '@/types/invoice'
 
 interface InvoiceFormDrawerProps {
@@ -110,7 +111,17 @@ export function InvoiceFormDrawer({
       items: value.items,
       total,
     }
-    isEdit ? updateInvoice(built.id, built) : addInvoice(built)
+    if (isEdit) {
+      updateInvoice(built.id, built)
+      if (status !== 'draft') {
+        gooeyToast.success(`Invoice #${built.id} has been updated.`)
+      }
+    } else {
+      addInvoice(built)
+      if (status !== 'draft') {
+        gooeyToast.success(`Invoice #${built.id} has been successfully added.`)
+      }
+    }
     handleClose()
   }
 
@@ -118,7 +129,9 @@ export function InvoiceFormDrawer({
     const value = form.state.values
     const result = DraftFormSchema.safeParse(value)
     if (result.success) {
-      submitInvoice(result.data as typeof DEFAULT_VALUES, 'draft')
+      const data = result.data as typeof DEFAULT_VALUES
+      submitInvoice(data, 'draft')
+      gooeyToast.success(`Your invoice draft has been saved.`)
     }
   }
 

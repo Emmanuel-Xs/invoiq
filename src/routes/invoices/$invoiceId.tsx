@@ -5,6 +5,7 @@ import { useInvoiceStore } from '@/store/invoice-store'
 import { StatusBadge } from '@/components/invoice/status-badge'
 import { InvoiceFormDrawer } from '@/components/invoice/invoice-form-drawer'
 import { Button } from '@/components/ui/button'
+import { gooeyToast } from 'goey-toast'
 import {
   Dialog,
   DialogContent,
@@ -13,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { formatDate, formatCurrency } from '@/lib/invoice'
+import { createPortal } from 'react-dom'
 
 export const Route = createFileRoute('/invoices/$invoiceId')({
   component: InvoiceDetailPage,
@@ -43,11 +45,13 @@ function InvoiceDetailPage() {
 
   function handleDelete() {
     deleteInvoice(invoiceId)
+    gooeyToast.success(`Invoice #${invoiceId} has been successfully deleted.`)
     router.navigate({ to: '/invoices' })
   }
 
   function handleMarkAsPaid() {
     markAsPaid(invoiceId)
+    gooeyToast.success(`Invoice #${invoiceId} has been marked as paid.`)
   }
 
   return (
@@ -216,21 +220,24 @@ function InvoiceDetailPage() {
       </div>
 
       {/* ── Mobile footer actions ── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card px-6 py-5 flex items-center justify-end gap-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
-        {invoice.status !== 'paid' && (
-          <Button variant="edit" onClick={() => setEditOpen(true)}>
-            Edit
+      {createPortal(
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-card px-6 py-5 flex items-center justify-end gap-3 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
+          {invoice.status !== 'paid' && (
+            <Button variant="edit" onClick={() => setEditOpen(true)}>
+              Edit
+            </Button>
+          )}
+          <Button variant="destructive" onClick={() => setDeleteOpen(true)}>
+            Delete
           </Button>
-        )}
-        <Button variant="destructive" onClick={() => setDeleteOpen(true)}>
-          Delete
-        </Button>
-        {invoice.status === 'pending' && (
-          <Button variant="primary" onClick={handleMarkAsPaid}>
-            Mark as Paid
-          </Button>
-        )}
-      </div>
+          {invoice.status === 'pending' && (
+            <Button variant="primary" onClick={handleMarkAsPaid}>
+              Mark as Paid
+            </Button>
+          )}
+        </div>,
+        document.body,
+      )}
 
       {/* ── Delete modal ── */}
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
