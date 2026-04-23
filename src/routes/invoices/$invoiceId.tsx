@@ -5,6 +5,13 @@ import { useInvoiceStore } from '@/store/invoice-store'
 import { StatusBadge } from '@/components/invoice/status-badge'
 import { InvoiceFormDrawer } from '@/components/invoice/invoice-form-drawer'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { formatDate, formatCurrency } from '@/lib/invoice'
 
 export const Route = createFileRoute('/invoices/$invoiceId')({
@@ -226,41 +233,31 @@ function InvoiceDetailPage() {
       </div>
 
       {/* ── Delete modal ── */}
-      {deleteOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={() => setDeleteOpen(false)}
-            aria-hidden="true"
-          />
-          <div
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="delete-title"
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-card rounded-lg p-12 w-full max-w-[480px] shadow-2xl"
-          >
-            <h2
-              id="delete-title"
-              className="text-heading-m text-foreground mb-3"
-            >
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className="p-8 md:p-12 w-full max-w-[480px] border-0 shadow-2xl bg-card"
+        >
+          <DialogHeader>
+            <DialogTitle className="text-heading-m text-foreground mb-3">
               Confirm Deletion
-            </h2>
-            <p className="text-body text-muted-foreground mb-8">
+            </DialogTitle>
+            <DialogDescription className="text-body text-muted-foreground mb-8">
               Are you sure you want to delete invoice{' '}
               <strong className="text-foreground">#{invoice.id}</strong>? This
               action cannot be undone.
-            </p>
-            <div className="flex justify-end gap-3">
-              <Button variant="edit" onClick={() => setDeleteOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="destructive" onClick={handleDelete}>
-                Delete
-              </Button>
-            </div>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 mt-4">
+            <Button variant="edit" onClick={() => setDeleteOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Delete
+            </Button>
           </div>
-        </>
-      )}
+        </DialogContent>
+      </Dialog>
 
       {/* ── Edit drawer ── */}
       <InvoiceFormDrawer

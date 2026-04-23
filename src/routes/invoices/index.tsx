@@ -6,6 +6,7 @@ import { useInvoiceStore } from '@/store/invoice-store'
 import emptyInvoices from '@/assets/empty-invoices.svg?url'
 import { InvoiceCard } from '@/components/invoice/invoice-card'
 import { InvoiceFormDrawer } from '@/components/invoice/invoice-form-drawer'
+import { LayoutGrid, List } from 'lucide-react'
 
 export const Route = createFileRoute('/invoices/')({
   component: InvoicesPage,
@@ -14,6 +15,7 @@ export const Route = createFileRoute('/invoices/')({
 function InvoicesPage() {
   const { invoices, filter } = useInvoiceStore()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
 
   const filtered = invoices.filter((inv) =>
     filter === 'all' ? true : inv.status === filter,
@@ -24,14 +26,30 @@ function InvoicesPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8 md:mb-14">
         <div>
-          <h1 className="text-heading-l text-foreground">Invoices</h1>
+          <h1 className="text-heading-m md:text-heading-l text-foreground">Invoices</h1>
           <p className="text-body text-muted-foreground mt-1">
             {invoices.length === 0
               ? 'No invoices'
               : `${filtered.length} invoice${filtered.length !== 1 ? 's' : ''}`}
           </p>
         </div>
-        <div className="flex items-center gap-4 md:gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
+          <div className="hidden md:flex items-center gap-1 bg-card rounded-lg p-1 mr-[-4px]">
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-md transition-colors ${viewMode === 'list' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+              aria-label="List view"
+            >
+              <List size={16} />
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+              aria-label="Grid view"
+            >
+              <LayoutGrid size={16} />
+            </button>
+          </div>
           <FilterDropdown />
           <NewInvoiceButton onClick={() => setDrawerOpen(true)} />
         </div>
@@ -54,9 +72,13 @@ function InvoicesPage() {
       )}
 
       {filtered.length > 0 && (
-        <ul className="flex flex-col gap-4">
+        <ul className={
+          viewMode === 'grid' 
+            ? "grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6" 
+            : "flex flex-col gap-4"
+        }>
           {filtered.map((invoice) => (
-            <InvoiceCard key={invoice.id} invoice={invoice} />
+            <InvoiceCard key={invoice.id} invoice={invoice} viewMode={viewMode} />
           ))}
         </ul>
       )}

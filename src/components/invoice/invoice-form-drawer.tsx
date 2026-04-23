@@ -78,7 +78,10 @@ export function InvoiceFormDrawer({
     document.body.style.overflow = open ? 'hidden' : ''
 
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') handleClose()
+      if (e.key === 'Escape') {
+        form.reset()
+        onClose()
+      }
     }
     if (open) document.addEventListener('keydown', onKey)
 
@@ -86,7 +89,7 @@ export function InvoiceFormDrawer({
       document.body.style.overflow = ''
       document.removeEventListener('keydown', onKey)
     }
-  }, [open])
+  }, [open, form, onClose])
 
   function submitInvoice(
     value: typeof DEFAULT_VALUES,
@@ -146,7 +149,7 @@ export function InvoiceFormDrawer({
         aria-label={isEdit ? `Edit Invoice ${invoice?.id}` : 'New Invoice'}
         className={[
           'fixed top-0 bottom-0 left-0 lg:left-24 z-50',
-          'w-3/5 max-w-[500px]',
+          'w-full md:w-3/5 max-w-[500px]',
           'bg-background rounded-r-[20px]',
           'flex flex-col',
           'transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]',
@@ -180,7 +183,7 @@ export function InvoiceFormDrawer({
               {(field) => (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="senderAddress-street" className="text-body text-muted-foreground">
                       Street Address
                     </Label>
                     {getError(field.state.meta.errors) && (
@@ -190,6 +193,7 @@ export function InvoiceFormDrawer({
                     )}
                   </div>
                   <input
+                    id="senderAddress-street"
                     className={inputCls(!!field.state.meta.errors[0])}
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -253,7 +257,7 @@ export function InvoiceFormDrawer({
               {(field) => (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="clientName" className="text-body text-muted-foreground">
                       Client's Name
                     </Label>
                     {getError(field.state.meta.errors) && (
@@ -263,6 +267,7 @@ export function InvoiceFormDrawer({
                     )}
                   </div>
                   <input
+                    id="clientName"
                     className={inputCls(!!field.state.meta.errors[0])}
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -279,7 +284,7 @@ export function InvoiceFormDrawer({
               {(field) => (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="clientEmail" className="text-body text-muted-foreground">
                       Client's Email
                     </Label>
                     {getError(field.state.meta.errors) && (
@@ -289,6 +294,7 @@ export function InvoiceFormDrawer({
                     )}
                   </div>
                   <input
+                    id="clientEmail"
                     className={inputCls(!!field.state.meta.errors[0])}
                     placeholder="e.g. email@example.com"
                     value={field.state.value}
@@ -308,7 +314,7 @@ export function InvoiceFormDrawer({
               {(field) => (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="clientAddress-street" className="text-body text-muted-foreground">
                       Street Address
                     </Label>
                     {getError(field.state.meta.errors) && (
@@ -318,6 +324,7 @@ export function InvoiceFormDrawer({
                     )}
                   </div>
                   <input
+                    id="clientAddress-street"
                     className={inputCls(!!field.state.meta.errors[0])}
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -376,10 +383,11 @@ export function InvoiceFormDrawer({
               <form.Field name="createdAt">
                 {(field) => (
                   <div className="space-y-2">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="createdAt" className="text-body text-muted-foreground">
                       Invoice Date
                     </Label>
                     <input
+                      id="createdAt"
                       type="date"
                       className={inputCls(false)}
                       value={field.state.value}
@@ -394,10 +402,11 @@ export function InvoiceFormDrawer({
               <form.Field name="paymentTerms">
                 {(field) => (
                   <div className="space-y-2">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="paymentTerms" className="text-body text-muted-foreground">
                       Payment Terms
                     </Label>
                     <select
+                      id="paymentTerms"
                       className={`${inputCls(false)} appearance-none cursor-pointer`}
                       value={field.state.value}
                       onBlur={field.handleBlur}
@@ -422,7 +431,7 @@ export function InvoiceFormDrawer({
               {(field) => (
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <Label className="text-body text-muted-foreground">
+                    <Label htmlFor="description" className="text-body text-muted-foreground">
                       Project Description
                     </Label>
                     {getError(field.state.meta.errors) && (
@@ -432,6 +441,7 @@ export function InvoiceFormDrawer({
                     )}
                   </div>
                   <input
+                    id="description"
                     className={inputCls(!!field.state.meta.errors[0])}
                     placeholder="e.g. Graphic Design"
                     value={field.state.value}
@@ -468,91 +478,113 @@ export function InvoiceFormDrawer({
                   {itemsField.state.value.map((item, index) => (
                     <div
                       key={item.id}
-                      className="grid grid-cols-[1fr_60px_100px_80px_20px] gap-4 items-center"
+                      className="grid grid-cols-[60px_1fr_1fr_20px] md:grid-cols-[1fr_60px_100px_80px_20px] gap-4 items-end md:items-center"
                     >
-                      <form.Field name={`items[${index}].name`}>
-                        {(f) => (
-                          <input
-                            className={inputCls(!!f.state.meta.errors[0])}
-                            placeholder="Item name"
-                            value={f.state.value}
-                            onBlur={f.handleBlur}
-                            onChange={(e) => f.handleChange(e.target.value)}
-                          />
-                        )}
-                      </form.Field>
+                      {/* Name - full width on mobile */}
+                      <div className="col-span-4 md:col-span-1 space-y-2 md:space-y-0">
+                        <span className="text-body text-muted-foreground md:hidden">Item Name</span>
+                        <form.Field name={`items[${index}].name`}>
+                          {(f) => (
+                            <input
+                              aria-label="Item name"
+                              className={inputCls(!!f.state.meta.errors[0])}
+                              placeholder="Item name"
+                              value={f.state.value}
+                              onBlur={f.handleBlur}
+                              onChange={(e) => f.handleChange(e.target.value)}
+                            />
+                          )}
+                        </form.Field>
+                      </div>
 
-                      <form.Field name={`items[${index}].quantity`}>
-                        {(f) => (
-                          <input
-                            type="number"
-                            min={1}
-                            className={inputCls(false)}
-                            value={f.state.value}
-                            onBlur={f.handleBlur}
-                            onChange={(e) => {
-                              const qty = Number(e.target.value)
-                              f.handleChange(qty)
-                              const price = itemsField.state.value[index].price
-                              itemsField.handleChange(
-                                itemsField.state.value.map((it, i) =>
-                                  i === index
-                                    ? {
-                                        ...it,
-                                        quantity: qty,
-                                        total: qty * price,
-                                      }
-                                    : it,
-                                ),
-                              )
-                            }}
-                          />
-                        )}
-                      </form.Field>
+                      {/* Qty */}
+                      <div className="space-y-2 md:space-y-0">
+                        <span className="text-body text-muted-foreground md:hidden">Qty.</span>
+                        <form.Field name={`items[${index}].quantity`}>
+                          {(f) => (
+                            <input
+                              aria-label="Item quantity"
+                              type="number"
+                              min={1}
+                              className={inputCls(false)}
+                              value={f.state.value}
+                              onBlur={f.handleBlur}
+                              onChange={(e) => {
+                                const qty = Number(e.target.value)
+                                f.handleChange(qty)
+                                const price = itemsField.state.value[index].price
+                                itemsField.handleChange(
+                                  itemsField.state.value.map((it, i) =>
+                                    i === index
+                                      ? {
+                                          ...it,
+                                          quantity: qty,
+                                          total: qty * price,
+                                        }
+                                      : it,
+                                  ),
+                                )
+                              }}
+                            />
+                          )}
+                        </form.Field>
+                      </div>
 
-                      <form.Field name={`items[${index}].price`}>
-                        {(f) => (
-                          <input
-                            type="number"
-                            min={0}
-                            step={0.01}
-                            className={inputCls(false)}
-                            value={f.state.value}
-                            onBlur={f.handleBlur}
-                            onChange={(e) => {
-                              const price = Number(e.target.value)
-                              f.handleChange(price)
-                              const qty = itemsField.state.value[index].quantity
-                              itemsField.handleChange(
-                                itemsField.state.value.map((it, i) =>
-                                  i === index
-                                    ? { ...it, price, total: qty * price }
-                                    : it,
-                                ),
-                              )
-                            }}
-                          />
-                        )}
-                      </form.Field>
+                      {/* Price */}
+                      <div className="space-y-2 md:space-y-0">
+                        <span className="text-body text-muted-foreground md:hidden">Price</span>
+                        <form.Field name={`items[${index}].price`}>
+                          {(f) => (
+                            <input
+                              aria-label="Item price"
+                              type="number"
+                              min={0}
+                              step={0.01}
+                              className={inputCls(false)}
+                              value={f.state.value}
+                              onBlur={f.handleBlur}
+                              onChange={(e) => {
+                                const price = Number(e.target.value)
+                                f.handleChange(price)
+                                const qty = itemsField.state.value[index].quantity
+                                itemsField.handleChange(
+                                  itemsField.state.value.map((it, i) =>
+                                    i === index
+                                      ? { ...it, price, total: qty * price }
+                                      : it,
+                                  ),
+                                )
+                              }}
+                            />
+                          )}
+                        </form.Field>
+                      </div>
 
-                      <span className="text-body text-muted-foreground font-bold">
-                        {(itemsField.state.value[index].total ?? 0).toFixed(2)}
-                      </span>
+                      {/* Total */}
+                      <div className="space-y-2 md:space-y-0 flex flex-col justify-end h-16 md:h-auto pb-4 md:pb-0">
+                        <span className="text-body text-muted-foreground md:hidden mb-2">Total</span>
+                        <span className="text-body text-muted-foreground font-bold">
+                          {(itemsField.state.value[index].total ?? 0).toFixed(2)}
+                        </span>
+                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() =>
-                          itemsField.handleChange(
-                            itemsField.state.value.filter(
-                              (_, i) => i !== index,
-                            ),
-                          )
-                        }
-                        className="text-muted-foreground hover:text-destructive transition-colors"
-                        aria-label="Remove item"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                      {/* Delete */}
+                      <div className="flex flex-col justify-end h-16 md:h-auto pb-4 md:pb-0 items-center">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            itemsField.handleChange(
+                              itemsField.state.value.filter(
+                                (_, i) => i !== index,
+                              ),
+                            )
+                          }
+                          className="text-muted-foreground hover:text-destructive transition-colors mt-8 md:mt-0"
+                          aria-label="Remove item"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
                   ))}
 

@@ -4,15 +4,17 @@ import { StatusBadge } from './status-badge'
 import { formatDate, formatCurrency } from '@/lib/invoice'
 import type { Invoice } from '@/types/invoice'
 
-export function InvoiceCard({ invoice }: { invoice: Invoice }) {
+export function InvoiceCard({ invoice, viewMode = 'list' }: { invoice: Invoice; viewMode?: 'list' | 'grid' }) {
   return (
     <Link
       to="/invoices/$invoiceId"
       params={{ invoiceId: invoice.id }}
-      className="group flex items-center bg-card rounded-lg px-6 py-5 border border-transparent hover:border-primary transition-colors cursor-pointer w-full"
+      className={`group flex bg-card rounded-lg px-6 py-5 border border-transparent hover:border-primary transition-colors cursor-pointer w-full ${
+        viewMode === 'grid' ? 'flex-col gap-6' : 'items-center'
+      }`}
     >
-      {/* Mobile layout — up to md */}
-      <div className="flex flex-col gap-6 w-full md:hidden">
+      {/* Grid Layout OR Mobile List Layout */}
+      <div className={`flex flex-col gap-6 w-full ${viewMode === 'list' ? 'md:hidden' : ''}`}>
         <div className="flex justify-between items-center">
           <span className="text-heading-s text-foreground">
             <span className="text-muted-foreground">#</span>
@@ -35,26 +37,28 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
         </div>
       </div>
 
-      {/* Desktop layout — md and up */}
-      <div className="hidden md:flex md:items-center md:w-full md:gap-6">
-        <span className="text-heading-s text-foreground w-[110px] shrink-0">
-          <span className="text-muted-foreground">#</span>
-          {invoice.id}
-        </span>
-        <span className="text-body text-muted-foreground w-[130px] shrink-0">
-          Due {formatDate(invoice.paymentDue)}
-        </span>
-        <span className="text-body text-muted-foreground flex-1">
-          {invoice.clientName}
-        </span>
-        <span className="text-heading-s text-foreground w-[120px] text-right shrink-0">
-          {formatCurrency(invoice.total)}
-        </span>
-        <div className="w-[110px] shrink-0 flex justify-center">
-          <StatusBadge status={invoice.status} />
+      {/* Desktop List Layout */}
+      {viewMode === 'list' && (
+        <div className="hidden md:flex md:items-center md:w-full md:gap-6">
+          <span className="text-heading-s text-foreground w-[110px] shrink-0">
+            <span className="text-muted-foreground">#</span>
+            {invoice.id}
+          </span>
+          <span className="text-body text-muted-foreground w-[130px] shrink-0">
+            Due {formatDate(invoice.paymentDue)}
+          </span>
+          <span className="text-body text-muted-foreground flex-1">
+            {invoice.clientName}
+          </span>
+          <span className="text-heading-s text-foreground w-[120px] text-right shrink-0">
+            {formatCurrency(invoice.total)}
+          </span>
+          <div className="w-[110px] shrink-0 flex justify-center">
+            <StatusBadge status={invoice.status} />
+          </div>
+          <ChevronRight size={16} className="text-primary shrink-0" />
         </div>
-        <ChevronRight size={16} className="text-primary shrink-0" />
-      </div>
+      )}
     </Link>
   )
 }

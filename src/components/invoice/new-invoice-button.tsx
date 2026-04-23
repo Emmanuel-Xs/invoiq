@@ -21,7 +21,8 @@ export function NewInvoiceButton({ onClick }: NewInvoiceButtonProps) {
           />
         </svg>
       </span>
-      New Invoice
+      <span className="hidden md:inline">New Invoice</span>
+      <span className="md:hidden">New</span>
     </Button>
   )
 }
