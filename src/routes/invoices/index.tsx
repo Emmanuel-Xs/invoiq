@@ -4,6 +4,8 @@ import { NewInvoiceButton } from '@/components/invoice/new-invoice-button'
 import { FilterDropdown } from '@/components/invoice/filter-dropdown'
 import { useInvoiceStore } from '@/store/invoice-store'
 import emptyInvoices from '@/assets/empty-invoices.svg?url'
+import { InvoiceCard } from '@/components/invoice/invoice-card'
+import { InvoiceFormDrawer } from '@/components/invoice/invoice-form-drawer'
 
 export const Route = createFileRoute('/invoices/')({
   component: InvoicesPage,
@@ -51,14 +53,17 @@ function InvoicesPage() {
         </div>
       )}
 
-      {/* Invoice list — we'll build InvoiceCard next */}
       {filtered.length > 0 && (
         <ul className="flex flex-col gap-4">
           {filtered.map((invoice) => (
-            <li key={invoice.id}>{invoice.id}</li>
+            <InvoiceCard key={invoice.id} invoice={invoice} />
           ))}
         </ul>
       )}
+      <InvoiceFormDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
     </div>
   )
 }

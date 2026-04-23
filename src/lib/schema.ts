@@ -16,13 +16,35 @@ export const InvoiceItemSchema = z.object({
 })
 
 export const InvoiceFormSchema = z.object({
-  description: z.string().min(1, "Can't be empty"),
-  paymentTerms: z.number(),
+  senderAddress: AddressSchema,
   clientName: z.string().min(1, "Can't be empty"),
   clientEmail: z.email('Invalid email'),
   clientAddress: AddressSchema,
-  senderAddress: AddressSchema,
+  createdAt: z.string().min(1, "Can't be empty"),
+  paymentTerms: z.number(),
+  description: z.string().min(1, "Can't be empty"),
   items: z.array(InvoiceItemSchema).min(1, 'Add at least one item'),
+})
+
+export const DraftFormSchema = z.object({
+  senderAddress: z.object({
+    street: z.string(),
+    city: z.string(),
+    postCode: z.string(),
+    country: z.string(),
+  }),
+  clientName: z.string(),
+  clientEmail: z.string(),
+  clientAddress: z.object({
+    street: z.string(),
+    city: z.string(),
+    postCode: z.string(),
+    country: z.string(),
+  }),
+  createdAt: z.string(),
+  paymentTerms: z.number(),
+  description: z.string(),
+  items: z.array(InvoiceItemSchema),
 })
 
 export type InvoiceFormValues = z.infer<typeof InvoiceFormSchema>
