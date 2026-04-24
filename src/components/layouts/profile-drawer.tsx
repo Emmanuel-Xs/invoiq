@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useProfileStore } from '@/store/profile-store'
+import { useForm } from '@tanstack/react-form'
 
 const AVATAR_STYLES = [
   { id: 'adventurer', label: 'Adventurer' },
@@ -29,18 +30,25 @@ export function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
   const [localName, setLocalName] = useState(name)
   const [localStyle, setLocalStyle] = useState(avatarStyle)
 
+  const form = useForm({
+    defaultValues: { name: name || '' },
+    onSubmit: async ({ value }) => {
+      setProfile(value.name.trim(), localStyle)
+      onClose()
+    },
+  })
+
   const previewUrl = localName
     ? `https://api.dicebear.com/9.x/${localStyle}/svg?seed=${encodeURIComponent(localName)}&backgroundColor=b6e3f4`
     : null
 
-  function handleSave() {
-    if (!localName.trim()) return
-    setProfile(localName.trim(), localStyle)
-    onClose()
-  }
-
   return (
-    <Drawer open={open} onOpenChange={(o) => !o && onClose()} direction="left">
+    <Drawer open={open} onOpenChange={(o) => {
+      if (!o) {
+        form.reset()
+        onClose()
+      }
+    }} direction="left">
       <DrawerContent className="h-full w-full max-w-[480px] rounded-r-[20px] rounded-l-none border-0 bg-card px-8 py-10 flex flex-col gap-8">
         <DrawerHeader className="p-0">
           <DrawerTitle className="text-heading-s text-foreground">
@@ -69,18 +77,41 @@ export function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
         </div>
 
         {/* Name input */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="profile-name" className="text-body text-primary">
-            Your Name
-          </Label>
-          <Input
-            id="profile-name"
-            value={localName}
-            onChange={(e) => setLocalName(e.target.value)}
-            placeholder="e.g. Emmanuel"
-            className="bg-card border-border text-foreground"
-          />
-        </div>
+        <form.Field
+          name="name"
+          validators={{
+            onChange: ({ value }) => {
+              if (!value.trim()) return "can't be empty"
+              if (value.trim().length < 2) return "must be at least 2 characters"
+              return undefined
+            }
+          }}
+        >
+          {(field) => {
+            const error = field.state.meta.errors[0]
+            return (
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <Label htmlFor="profile-name" className={`text-body ${error ? 'text-destructive' : 'text-primary'}`}>
+                    Your Name
+                  </Label>
+                  {error && <span className="text-body-s text-destructive font-medium">{error.toString()}</span>}
+                </div>
+                <Input
+                  id="profile-name"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value)
+                    setLocalName(e.target.value) // update avatar sync
+                  }}
+                  placeholder="e.g. Emmanuel"
+                  className={`bg-card text-foreground ${error ? 'border-destructive focus-visible:ring-destructive' : 'border-border'}`}
+                />
+              </div>
+            )
+          }}
+        </form.Field>
 
         {/* Style picker */}
         <div className="flex flex-col gap-3">
@@ -113,13 +144,17 @@ export function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
 
         {/* Save */}
         <div className="mt-auto">
-          <Button
-            onClick={handleSave}
-            disabled={!localName.trim()}
-            className="w-full bg-primary hover:bg-primary-hover text-white rounded-full h-12 text-body font-bold"
-          >
-            Save Profile
-          </Button>
+          <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+            {([canSubmit, isSubmitting]) => (
+              <Button
+                onClick={() => form.handleSubmit()}
+                disabled={!canSubmit || (isSubmitting as boolean)}
+                className="w-full bg-primary hover:bg-primary-hover text-white rounded-full h-12 text-body font-bold"
+              >
+                Save Profile
+              </Button>
+            )}
+          </form.Subscribe>
         </div>
       </DrawerContent>
     </Drawer>
