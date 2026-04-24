@@ -58,17 +58,17 @@ The project follows a **route-centric, component-driven** architecture using fil
 
 ### Tech Stack
 
-| Layer            | Technology                                |
-| ---------------- | ----------------------------------------- |
-| Framework        | React 19 + TypeScript                     |
-| Build Tool       | Vite 8                                    |
-| Routing          | TanStack Router (type-safe, file-based)   |
-| Forms            | TanStack Form + Zod validation            |
-| State Management | Zustand (with `persist` middleware)        |
+| Layer            | Technology                                      |
+| ---------------- | ----------------------------------------------- |
+| Framework        | React 19 + TypeScript                           |
+| Build Tool       | Vite 8                                          |
+| Routing          | TanStack Router (type-safe, file-based)         |
+| Forms            | TanStack Form + Zod validation                  |
+| State Management | Zustand (with `persist` middleware)             |
 | Styling          | Tailwind CSS 4 + CVA (class-variance-authority) |
-| UI Primitives    | Shadcn UI + Vaul (drawer)                 |
-| Icons            | Lucide React                              |
-| Font             | League Spartan Variable (via Fontsource)  |
+| UI Primitives    | Shadcn UI + Vaul (drawer)                       |
+| Icons            | Lucide React                                    |
+| Font             | League Spartan Variable (via Fontsource)        |
 
 ### Directory Structure
 
@@ -178,13 +178,13 @@ All invoice data flows through a single Zustand store (`useInvoiceStore`) which 
 
 ## ⚖️ Trade-offs
 
-| Decision                         | Rationale                                                                                                                                     |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **LocalStorage over IndexedDB**  | Zustand's `persist` middleware integrates seamlessly with LocalStorage. The invoice data size is small enough that LocalStorage is sufficient and simpler to implement. |
-| **Custom modal over Dialog primitive** | The delete confirmation modal is implemented as a custom overlay for precise Figma-matching styling. A dedicated `Dialog` component exists in `ui/` for future use. |
-| **Single-status filter**         | Implemented as a radio-style selector (one active filter at a time) rather than multi-select checkboxes. This keeps the UX straightforward and matches common invoice app patterns. |
-| **TanStack Router over React Router** | Provides type-safe routing with automatic route tree generation, reducing runtime errors and improving DX. |
-| **Slide-in drawer form**         | Uses a slide-in panel rather than a separate page for invoice creation/editing, keeping context and reducing navigation friction. |
+| Decision                               | Rationale                                                                                                                                                                           |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **LocalStorage over IndexedDB**        | Zustand's `persist` middleware integrates seamlessly with LocalStorage. The invoice data size is small enough that LocalStorage is sufficient and simpler to implement.             |
+| **Custom modal over Dialog primitive** | The delete confirmation modal is implemented as a custom overlay for precise Figma-matching styling. A dedicated `Dialog` component exists in `ui/` for future use.                 |
+| **Single-status filter**               | Implemented as a radio-style selector (one active filter at a time) rather than multi-select checkboxes. This keeps the UX straightforward and matches common invoice app patterns. |
+| **TanStack Router over React Router**  | Provides type-safe routing with automatic route tree generation, reducing runtime errors and improving DX.                                                                          |
+| **Slide-in drawer form**               | Uses a slide-in panel rather than a separate page for invoice creation/editing, keeping context and reducing navigation friction.                                                   |
 
 ---
 
@@ -224,7 +224,6 @@ All invoice data flows through a single Zustand store (`useInvoiceStore`) which 
 - **Gooey Notifications**: Integrated `goey-toast` for smooth, interactive toast notifications when creating, updating, or deleting invoices.
 - **View Toggle**: Added a **Grid/List view switcher** on the dashboard, allowing users to toggle between a compact list and a multi-column grid layout.
 - **Enhanced Form UX**: Error messages are consistently placed below inputs to prevent UI shifting and improve readability during validation.
-- **Figma-Perfect Buttons**: Refined button variants (Edit, Draft, Ghost) using specific hex color values from the design spec to ensure visual accuracy across themes.
 - **Profile Customization**: Users can set their name and choose from 6 different avatar styles powered by the DiceBear API. The avatar is displayed in the sidebar.
 - **Animated Transitions**: The form drawer uses a cubic-bezier eased slide animation. The overlay fades in/out smoothly.
 - **Custom Typography Scale**: A pixel-perfect typography system (Heading L/M/S, Body, Body S) matches the Figma design spec exactly.
