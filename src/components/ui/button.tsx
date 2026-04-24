@@ -9,17 +9,17 @@ const buttonVariants = cva(
         // Button 1 & 2 — primary purple pill
         primary:
           'bg-primary hover:bg-primary-hover text-primary-foreground rounded-full',
-        // Button 3 — Edit (light: muted bg, dark: card bg)
-        edit: 'bg-[hsl(231,73%,93%)] hover:bg-muted text-[hsl(231,37%,63%)] dark:bg-[hsl(233,30%,21%)] dark:hover:bg-card dark:text-[hsl(231,73%,93%)] rounded-full',
+        // Button 3 — Edit
+        edit: 'bg-[#F9FAFE] hover:bg-[#DFE3FA] text-[#7E88C3] dark:bg-[#252945] dark:hover:bg-[#FFFFFF] dark:text-[#DFE3FA] dark:hover:text-[#7E88C3] rounded-full',
         // Button 4 — Save as Draft
         draft:
-          'bg-[hsl(231,20%,27%)] hover:bg-[hsl(233,31%,17%)] text-[hsl(231,20%,61%)] dark:bg-[hsl(233,30%,21%)] dark:hover:bg-[hsl(233,31%,17%)] dark:text-[hsl(231,73%,93%)] rounded-full',
+          'bg-[#373B53] hover:bg-[#0C0E16] text-[#888EB0] dark:bg-[#373B53] dark:hover:bg-[#1E2139] dark:text-[#DFE3FA] dark:hover:text-[#DFE3FA] rounded-full',
         // Button 5 — Delete
         destructive:
           'bg-destructive hover:bg-destructive-hover text-white rounded-full',
         // Button 6 — Add New Item
         ghost:
-          'bg-[hsl(231,73%,93%)] hover:bg-muted text-[hsl(231,37%,63%)] dark:bg-[hsl(233,30%,21%)] dark:hover:bg-[hsl(233,31%,17%)] dark:text-[hsl(231,73%,93%)] rounded-full w-full',
+          'bg-[#F9FAFE] hover:bg-[#DFE3FA] text-[#7E88C3] dark:bg-[#252945] dark:hover:bg-[#FFFFFF] dark:text-[#DFE3FA] dark:hover:text-[#7E88C3] rounded-full w-full',
       },
       size: {
         default: 'h-12 px-6 text-body',
