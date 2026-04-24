@@ -95,7 +95,6 @@ export function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
                   <Label htmlFor="profile-name" className={`text-body ${error ? 'text-destructive' : 'text-primary'}`}>
                     Your Name
                   </Label>
-                  {error && <span className="text-body-s text-destructive font-medium">{error.toString()}</span>}
                 </div>
                 <Input
                   id="profile-name"
@@ -108,6 +107,11 @@ export function ProfileDrawer({ open, onClose }: ProfileDrawerProps) {
                   placeholder="e.g. Emmanuel"
                   className={`bg-card text-foreground ${error ? 'border-destructive focus-visible:ring-destructive' : 'border-border'}`}
                 />
+                {error && (
+                  <span className="text-body-s text-destructive font-medium">
+                    {error.toString()}
+                  </span>
+                )}
               </div>
             )
           }}

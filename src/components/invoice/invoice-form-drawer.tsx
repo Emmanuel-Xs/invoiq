@@ -199,11 +199,6 @@ export function InvoiceFormDrawer({
                     <Label htmlFor="senderAddress-street" className="text-body text-muted-foreground">
                       Street Address
                     </Label>
-                    {getError(field.state.meta.errors) && (
-                      <span className="text-body text-destructive">
-                        {getError(field.state.meta.errors)}
-                      </span>
-                    )}
                   </div>
                   <input
                     id="senderAddress-street"
@@ -212,6 +207,11 @@ export function InvoiceFormDrawer({
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
+                  {getError(field.state.meta.errors) && (
+                    <span className="text-body text-destructive block">
+                      {getError(field.state.meta.errors)}
+                    </span>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -240,11 +240,6 @@ export function InvoiceFormDrawer({
                         <Label className="text-body text-muted-foreground">
                           {label}
                         </Label>
-                        {getError(field.state.meta.errors) && (
-                          <span className="text-body-s text-destructive">
-                            {getError(field.state.meta.errors)}
-                          </span>
-                        )}
                       </div>
                       <input
                         className={inputCls(!!field.state.meta.errors[0])}
@@ -252,6 +247,11 @@ export function InvoiceFormDrawer({
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
                       />
+                      {getError(field.state.meta.errors) && (
+                        <span className="text-body-s text-destructive block">
+                          {getError(field.state.meta.errors)}
+                        </span>
+                      )}
                     </div>
                   )}
                 </form.Field>
@@ -273,11 +273,6 @@ export function InvoiceFormDrawer({
                     <Label htmlFor="clientName" className="text-body text-muted-foreground">
                       Client's Name
                     </Label>
-                    {getError(field.state.meta.errors) && (
-                      <span className="text-body text-destructive">
-                        {getError(field.state.meta.errors)}
-                      </span>
-                    )}
                   </div>
                   <input
                     id="clientName"
@@ -286,6 +281,11 @@ export function InvoiceFormDrawer({
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
+                  {getError(field.state.meta.errors) && (
+                    <span className="text-body text-destructive block">
+                      {getError(field.state.meta.errors)}
+                    </span>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -300,11 +300,6 @@ export function InvoiceFormDrawer({
                     <Label htmlFor="clientEmail" className="text-body text-muted-foreground">
                       Client's Email
                     </Label>
-                    {getError(field.state.meta.errors) && (
-                      <span className="text-body text-destructive">
-                        {getError(field.state.meta.errors)}
-                      </span>
-                    )}
                   </div>
                   <input
                     id="clientEmail"
@@ -314,6 +309,11 @@ export function InvoiceFormDrawer({
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
+                  {getError(field.state.meta.errors) && (
+                    <span className="text-body text-destructive block">
+                      {getError(field.state.meta.errors)}
+                    </span>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -330,11 +330,6 @@ export function InvoiceFormDrawer({
                     <Label htmlFor="clientAddress-street" className="text-body text-muted-foreground">
                       Street Address
                     </Label>
-                    {getError(field.state.meta.errors) && (
-                      <span className="text-body text-destructive">
-                        {getError(field.state.meta.errors)}
-                      </span>
-                    )}
                   </div>
                   <input
                     id="clientAddress-street"
@@ -343,6 +338,11 @@ export function InvoiceFormDrawer({
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
+                  {getError(field.state.meta.errors) && (
+                    <span className="text-body text-destructive block">
+                      {getError(field.state.meta.errors)}
+                    </span>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -371,11 +371,6 @@ export function InvoiceFormDrawer({
                         <Label className="text-body text-muted-foreground">
                           {label}
                         </Label>
-                        {getError(field.state.meta.errors) && (
-                          <span className="text-body-s text-destructive">
-                            {getError(field.state.meta.errors)}
-                          </span>
-                        )}
                       </div>
                       <input
                         className={inputCls(!!field.state.meta.errors[0])}
@@ -383,6 +378,11 @@ export function InvoiceFormDrawer({
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
                       />
+                      {getError(field.state.meta.errors) && (
+                        <span className="text-body-s text-destructive block">
+                          {getError(field.state.meta.errors)}
+                        </span>
+                      )}
                     </div>
                   )}
                 </form.Field>
@@ -447,11 +447,6 @@ export function InvoiceFormDrawer({
                     <Label htmlFor="description" className="text-body text-muted-foreground">
                       Project Description
                     </Label>
-                    {getError(field.state.meta.errors) && (
-                      <span className="text-body text-destructive">
-                        {getError(field.state.meta.errors)}
-                      </span>
-                    )}
                   </div>
                   <input
                     id="description"
@@ -461,6 +456,11 @@ export function InvoiceFormDrawer({
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
+                  {getError(field.state.meta.errors) && (
+                    <span className="text-body text-destructive block">
+                      {getError(field.state.meta.errors)}
+                    </span>
+                  )}
                 </div>
               )}
             </form.Field>

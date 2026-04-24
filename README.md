@@ -133,11 +133,12 @@ All invoice data flows through a single Zustand store (`useInvoiceStore`) which 
 
 ### Form Validation
 
-- All required fields validated via **Zod schemas** with clear inline error messages.
+- All required fields validated via **Zod schemas** with clear inline error messages positioned below inputs for better UX.
 - Client email validated for proper format.
 - At least one line item required for submission.
 - Quantity must be ≥ 1 and price must be > 0.
 - Draft invoices use a relaxed schema (fields can be empty) while pending invoices enforce full validation.
+- Profile management migrated to **TanStack Form** for robust state management and field-level validation feedback.
 
 ### Status Workflow
 
@@ -219,6 +220,11 @@ All invoice data flows through a single Zustand store (`useInvoiceStore`) which 
 
 ## 🌟 Improvements Beyond Requirements
 
+- **Site Favicon**: Custom SVG favicon using the site's logo for better branding and identification in browser tabs.
+- **Gooey Notifications**: Integrated `goey-toast` for smooth, interactive toast notifications when creating, updating, or deleting invoices.
+- **View Toggle**: Added a **Grid/List view switcher** on the dashboard, allowing users to toggle between a compact list and a multi-column grid layout.
+- **Enhanced Form UX**: Error messages are consistently placed below inputs to prevent UI shifting and improve readability during validation.
+- **Figma-Perfect Buttons**: Refined button variants (Edit, Draft, Ghost) using specific hex color values from the design spec to ensure visual accuracy across themes.
 - **Profile Customization**: Users can set their name and choose from 6 different avatar styles powered by the DiceBear API. The avatar is displayed in the sidebar.
 - **Animated Transitions**: The form drawer uses a cubic-bezier eased slide animation. The overlay fades in/out smoothly.
 - **Custom Typography Scale**: A pixel-perfect typography system (Heading L/M/S, Body, Body S) matches the Figma design spec exactly.
